@@ -14,11 +14,6 @@
 }
 
 
-
-.au-group-notice-blurb:hover > .au-group-notice-blurb-inner {
-	display:block;
-}
-
 .au-group-notice-blurb > .au-group-notice-blurb-inner {
 	display: none;
 }
