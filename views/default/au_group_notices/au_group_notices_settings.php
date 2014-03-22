@@ -186,6 +186,10 @@
 				\$( \"#au-show-notices\" ).click(function() {
 				  \$( \".au-group-notice-blurb  .au-group-notice-blurb-inner \" ).toggle();
 				});
+
+				\$( \".au-group-notice-blurb\" ).click(function() {
+					\$(\".au-group-notice-blurb-inner\",this).toggle();
+				});
 			</script>
 		";
 		$title = elgg_echo("au_group_notices:settings");
