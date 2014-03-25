@@ -35,26 +35,16 @@ if ($corners=='1'){
 if (!empty($group) && elgg_instanceof($group, "group")){
 	//first set this to the default notice
 	$notice=$group->au_group_notice;
-	//replace with different notice if in blog context and notice is set
-	if ($group->au_group_blog_notice && elgg_in_context('blog')){
-		$notice=$group->au_group_blog_notice;
+	
+	//loop through other notice possibilities
+	$contexts = array('blog','discussion','bookmarks','pages','file');
+	foreach ($contexts as $context){
+		$noticepart="au_group_".$context."_notice";
+		if ($group->{$noticepart} && elgg_in_context($context)){
+			$notice=$group->{$noticepart};
+		}
 	}
-	//replace with different notice for discussions if notice set
-	if ($group->au_group_discussion_notice && elgg_in_context('discussion')){
-		$notice=$group->au_group_discussion_notice;
-	}
-	//likewise bookmarks
-	if ($group->au_group_bookmarks_notice && elgg_in_context('bookmarks')){
-		$notice=$group->au_group_bookmarks_notice;
-	}	
-	//likewise pages
-	if ($group->au_group_pages_notice && elgg_in_context('pages')){
-		$notice=$group->au_group_pages_notice;
-	}	
-	//likewise files
-	if ($group->au_group_file_notice && elgg_in_context('file')){
-		$notice=$group->au_group_file_notice;
-	}	
+
 	if ($notice){
 		// there is a notice to display so do so
 		?>

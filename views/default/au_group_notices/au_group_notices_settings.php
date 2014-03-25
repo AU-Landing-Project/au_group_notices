@@ -20,7 +20,9 @@
 		//default notice
 		$form_body.="<div class='au-group-notice-blurb'>";			
 		$form_body.="<br />";
-		$form_body.="<p class='elgg-module-popup'><strong>".elgg_echo('au_group_notices:noticeblurb')."</strong></p>";
+		$form_body.="<div class='elgg-module-popup'><strong>".elgg_echo('au_group_notices:noticeblurb')."</strong>";
+		$form_body.="<div class='au-group-notice-toggle'>".elgg_echo("au_group_notices:click")."</div></div>";
+		$form_body.="</div>";
 		$form_body.="<div class='au-group-notice-blurb-inner'>";		
 		$form_body.= elgg_view('input/longtext', array(
 			'name' => 'au_group_notice',
@@ -28,87 +30,29 @@
 			'value' => $notice,
 		));
 		$form_body.="</div>";
-		$form_body.="</div>";
 
-		//blog notice
-		if (elgg_is_active_plugin('blog')){
-			$blognotice=$group->au_group_blog_notice;
-			$form_body.="<div class='au-group-notice-blurb'>";
-			$form_body.="<br />";
-			$form_body.="<p class='elgg-module-popup'>".elgg_echo('au_group_notices:blognoticeblurb')."</p>";
-			$form_body.="<div class='au-group-notice-blurb-inner'>";		
-			$form_body.= elgg_view('input/longtext', array(
-				'name' => 'au_group_blog_notice',
-				'id' => 'au_group_blog_notice',
-				'value' => $blognotice,
-			));
-			$form_body.="</div>";
-			$form_body.="</div>";
+		//iterate through different forms for different contexts
+		$contexts = array('blog','discussion','bookmarks','pages','file');
+		foreach ($contexts as $context){
+			$noticepart="au_group_".$context."_notice";
+			if (elgg_is_active_plugin($context) || $context=='discussion'){
+				$currentnotice=$group->{$noticepart};
+				$form_body.="<div class='au-group-notice-blurb'>";
+				$form_body.="<br />";
+				$form_body.="<div class='elgg-module-popup'>".elgg_echo("au_group_notices:{$context}noticeblurb");
+				$form_body.="<div class='au-group-notice-toggle'>".elgg_echo("au_group_notices:click")."</div></div>";
+				$form_body.="</div>";
+				$form_body.="<div class='au-group-notice-blurb-inner'>";		
+				$form_body.= elgg_view('input/longtext', array(
+					'name' => "{$noticepart}",
+					'id' => "{$noticepart}",
+					'value' => $currentnotice,
+				));
+				$form_body.="</div>";
+			}
+			
 		}
 
-		// discussion notice
-		$discussionnotice=$group->au_group_discussion_notice;
-		$form_body.="<div class='au-group-notice-blurb'>";
-		$form_body.="<br />";
-		$form_body.="<p class='elgg-module-popup'>".elgg_echo('au_group_notices:discussionnoticeblurb')."</p>";
-		$form_body.="<div class='au-group-notice-blurb-inner'>";		
-		$form_body.= elgg_view('input/longtext', array(
-			'name' => 'au_group_discussion_notice',
-			'id' => 'au_group_discussion_notice',
-			'value' => $discussionnotice,
-		));
-		$form_body.="</div>";
-		$form_body.="</div>";
-
-		// bookmarks notice
-		if (elgg_is_active_plugin('bookmarks')){
-			$bookmarksnotice=$group->au_group_bookmarks_notice;
-			$form_body.="<div class='au-group-notice-blurb'>";
-			$form_body.="<br />";
-			$form_body.="<p class='elgg-module-popup'>".elgg_echo('au_group_notices:bookmarksnoticeblurb')."</p>";
-			$form_body.="<div class='au-group-notice-blurb-inner'>";		
-			$form_body.= elgg_view('input/longtext', array(
-				'name' => 'au_group_bookmarks_notice',
-				'id' => 'au_group_bookmarks_notice',
-				'value' => $bookmarksnotice,
-			));
-			$form_body.="</div>";
-			$form_body.="</div>";
-		}
-		// pages notice
-		if (elgg_is_active_plugin('pages')){
-			$pagesnotice=$group->au_group_pages_notice;
-			$form_body.="<div class='au-group-notice-blurb'>";
-			$form_body.="<br />";
-			$form_body.="<p class='elgg-module-popup'>".elgg_echo('au_group_notices:pagesnoticeblurb')."</p>";
-			$form_body.="<div class='au-group-notice-blurb-inner'>";		
-			$form_body.= elgg_view('input/longtext', array(
-				'name' => 'au_group_pages_notice',
-				'id' => 'au_group_pages_notice',
-				'value' => $pagesnotice,
-			));
-			$form_body.="</div>";
-			$form_body.="</div>";
-	
-	
-		}
-		// files notice
-		if (elgg_is_active_plugin('file')){	
-			$filenotice=$group->au_group_file_notice;
-			$form_body.="<div class='au-group-notice-blurb'>";
-			$form_body.="<br />";
-			$form_body.="<p class='elgg-module-popup'>".elgg_echo('au_group_notices:filenoticeblurb')."</p>";
-			$form_body.="<div class='au-group-notice-blurb-inner'>";		
-			$form_body.= elgg_view('input/longtext', array(
-				'name' => 'au_group_file_notice',
-				'id' => 'au_group_file_notice',
-				'value' => $filenotice,
-			));
-			$form_body.="</div>";
-			$form_body.="</div>";
-	
-	
-		}
 		$form_body .="</div>"; //close div for show/hide notices
 
 		//select the location to show the notice
@@ -116,6 +60,7 @@
 		$form_body.="<div>";	
 		$form_body.="<label for='au_group_notice_position'>".elgg_echo('au_group_notices:position').": </label> ";
 		$position= $group->au_group_notice_position;
+		if (!$position){$position='top';}
 		$options=array('top'=>elgg_echo('au_group_notices:top'),
 						'bottom'=>elgg_echo('au_group_notices:bottom'),
 						'sidetop'=>elgg_echo('au_group_notices:sidetop'), 
@@ -133,6 +78,7 @@
 		//choose background colour
 		$form_body.="<label for='au_group_notice_bg'>".elgg_echo('au_group_notices:bg').": </label> ";
 		$bg= $group->au_group_notice_bg;
+		if (!$bg){$bg='transparent';}
 		$options=array('white'=>elgg_echo('au_group_notices:white'),
 						'black'=>elgg_echo('au_group_notices:black'),
 						'silver' => elgg_echo('au_group_notices:silver'),
@@ -154,6 +100,7 @@
 		//choose border, yes or no
 		$form_body.="<label for='au_group_notice_border'>".elgg_echo('au_group_notices:border').": </label> ";
 		$border= $group->au_group_notice_border;
+		if (!$border){$border='0';}
 		$options=array('1'=>elgg_echo('option:yes'),
 						'0'=>elgg_echo('option:no')					);		
 		$form_body.=elgg_view("input/dropdown", array ("name"=>"au_group_notice_border",
@@ -167,6 +114,7 @@
 		$form_body.="<div>";
 		$form_body.="<label for='au_group_notice_corners'>".elgg_echo('au_group_notices:corners').": </label> ";
 		$corners= $group->au_group_notice_corners;
+		if (!$corners){$corners='0';}
 		$options=array('1'=>elgg_echo('option:yes'),
 						'0'=>elgg_echo('option:no')					);		
 		$form_body.=elgg_view("input/dropdown", array ("name"=>"au_group_notice_corners",
@@ -184,11 +132,11 @@
 		$form_body .="
 			<script>
 				\$( \"#au-show-notices\" ).click(function() {
-				  \$( \".au-group-notice-blurb  .au-group-notice-blurb-inner \" ).toggle();
+				  \$( \".au-group-notice-blurb-inner \" ).toggle();
 				});
 
 				\$( \".au-group-notice-blurb\" ).click(function() {
-					\$(\".au-group-notice-blurb-inner\",this).toggle();
+					\$(this).next().toggle();
 				});
 			</script>
 		";

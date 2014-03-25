@@ -14,6 +14,11 @@
 }
 
 
-.au-group-notice-blurb > .au-group-notice-blurb-inner {
+.au-group-notice-blurb-inner {
 	display: none;
+}
+
+.au-group-notice-toggle {
+	float:right;
+	font-style: italic;
 }

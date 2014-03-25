@@ -12,6 +12,7 @@ $mapping = array(
 	'au_group_notices:bookmarksnoticeblurb' => 'Notice to display when viewing bookmarks',
 	'au_group_notices:pagesnoticeblurb' => 'Notice to display when viewing wikis',
 	'au_group_notices:filenoticeblurb' => 'Notice to display when viewing files',
+	'au_group_notices:click' => 'Click to show/hide',	
 	'au_group_notices:position' => 'Position to display notice',
 	'au_group_notices:title' => 'Add a default notice to display in this group',
 	'au_group_notices:settings' => 'Add group notices',	

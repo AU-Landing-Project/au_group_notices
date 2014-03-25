@@ -8,3 +8,6 @@ What's new
 =========================
 Version 1.1
 Replaces hover-over with toggle button to reveal forms
+
+Version 1.2
+Fixes UI bug with TinyMCE, UI tweaks for clarity, optimized code for easier modification
