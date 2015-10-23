@@ -3,7 +3,7 @@
  * language settings for au_group_notices
  */
 
-$mapping = array(
+return array(
 	'au_group_notices:help' => "You can use this tool to add notices to all this group's pages. Click the 'Show/hide notice forms' button to show or hide all the notices on this page, or click individual notices to see one at a time. Leave any notice entry form blank to display nothing for that tool (or, if one is set, the default group notice). Beware that, if a default notice is set, it will appear on every group page that does not have an alternative notice set for it. Note that, if you wish your notice to be displayed in the sidebar, it is best to keep it short, otherwise it may look very messy. Longer notices should be displayed in the header or footer of the group.",
 	'au_group_notices:noticeblurb' => 'Default notice',
 	'au_group_notices:toggle' => 'Show/hide notice forms',
@@ -34,5 +34,3 @@ $mapping = array(
 	'au_group_notices:border' =>'Display notice border',
 	'au_group_notices:corners' =>'Display notice with rounded corners',
 );
-
-add_translation('en', $mapping);
